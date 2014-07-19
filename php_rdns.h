@@ -5,7 +5,7 @@
 
 #include <php.h>
 
-PHP_MINIT_FUNCTION(rdns);
-PHP_MINFO_FUNCTION(rdns);
+static PHP_MINIT_FUNCTION(rdns);
+static PHP_MINFO_FUNCTION(rdns);
 
 #endif
