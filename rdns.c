@@ -7,6 +7,26 @@
 #define PHP_RDNS_VERSION "0.1.0"
 #define PHP_RDNS_EXTNAME "RDNS"
 
+#define RDNS_INIT_VARS                          \
+  zval *object = getThis();                     \
+  php_rdns_t *i_obj = NULL;
+
+#define RDNS_FETCH_OBJECT                                                  \
+  i_obj = (php_rdns_t *) zend_object_store_get_object( object TSRMLS_CC );
+
+typedef struct {
+  zend_fcall_info fci;
+  zend_fcall_info_cache fcc;
+  zend_bool oneshot;
+  ulong h;
+} php_cb_data_t;
+
+typedef struct {
+  zend_object obj;
+  /* rdns_resolver *resolver; */
+  php_cb_data_t *cb_data;
+} php_rdns_t;
+
 static zend_class_entry *rdns_ce = NULL;
 
 extern zend_module_entry rdns_module_entry;
@@ -17,12 +37,23 @@ static PHP_METHOD(RDNS, addServer);
 static PHP_METHOD(RDNS, addRequest);
 static PHP_METHOD(RDNS, getReplies);
 
+ZEND_BEGIN_ARG_INFO_EX(arginfo_addServer, 0, 0, 1)
+  ZEND_ARG_INFO(0, server)
+  ZEND_ARG_INFO(0, port)
+  ZEND_ARG_INFO(0, prio)
+ZEND_END_ARG_INFO()
+
+ZEND_BEGIN_ARG_INFO_EX(arginfo_addRequest, 0, 0, 3)
+  ZEND_ARG_INFO(0, hostname)
+  ZEND_ARG_INFO(0, type)
+  ZEND_ARG_INFO(0, timeout)
+ZEND_END_ARG_INFO()
+
 #define RDNS_ME(name, args) PHP_ME(RDNS, name, args, ZEND_ACC_PUBLIC)
 static zend_function_entry rdns_class_methods[] = {
-  /* RDNS_ME(__construct, arginfo___construct) */
   RDNS_ME(__construct, NULL)
-  RDNS_ME(addServer,   NULL)
-  RDNS_ME(addRequest,  NULL)
+  RDNS_ME(addServer,   arginfo_addServer)
+  RDNS_ME(addRequest,  arginfo_addRequest)
   RDNS_ME(getReplies,  NULL)
   PHP_FE_END
 };
@@ -55,6 +86,11 @@ ZEND_GET_MODULE(rdns)
 static PHP_METHOD(RDNS, __construct)
 {
   zval *object = getThis();
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
+    ZVALL_NULL(object);
+    return;
+  }
 }
 /* }}} */
 
@@ -62,8 +98,22 @@ static PHP_METHOD(RDNS, __construct)
 /* {{{ RDNS::addServer(string $server [, int $port = 53 [, int $prio = 0 ] ]) */
 static PHP_METHOD(RDNS, addServer)
 {
-  /* TODO: implement */
-  RETURN_FALSE;
+  char *server;
+  size_t server_len;
+  long port = 53, prio = 0;
+
+  RDNS_INIT_VARS;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|ll",
+                            &server, &server_len, &port, &prio) == FAILURE) {
+    return;
+  }
+
+  php_printf("%s %ld %ld\n", server, port, prio);
+
+  RDNS_FETCH_OBJECT;
+
+  RETURN_TRUE;
 }
 /* }}} */
 
@@ -71,8 +121,23 @@ static PHP_METHOD(RDNS, addServer)
 /* {{{ RDNS::addRequest(string $hostname, int $type, float $timeout) */
 static PHP_METHOD(RDNS, addRequest)
 {
-  /* TODO: implement */
-  RETURN_FALSE;
+  char *hostname;
+  size_t hostname_len;
+  long type, timeout;
+
+  RDNS_INIT_VARS;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll",
+                            &hostname, &hostname_len, &type, &timeout) == FAILURE) {
+    ZVALL_NULL(object);
+    return;
+  }
+
+  php_printf("%s %ld %ld\n", hostname, type, timeout);
+
+  RDNS_FETCH_OBJECT;
+
+  RETURN_TRUE;
 }
 /* }}} */
 
@@ -80,8 +145,15 @@ static PHP_METHOD(RDNS, addRequest)
 /* {{{ RDNS::getReplies() */
 static PHP_METHOD(RDNS, getReplies)
 {
-  /* TODO: implement */
-  RETURN_FALSE;
+  RDNS_INIT_VARS;
+
+  if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
+    return;
+  }
+
+  RDNS_FETCH_OBJECT;
+
+  RETURN_TRUE;
 }
 /* }}} */
 
