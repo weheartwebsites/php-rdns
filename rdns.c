@@ -15,16 +15,8 @@
   i_obj = (php_rdns_t *) zend_object_store_get_object( object TSRMLS_CC );
 
 typedef struct {
-  zend_fcall_info fci;
-  zend_fcall_info_cache fcc;
-  zend_bool oneshot;
-  ulong h;
-} php_cb_data_t;
-
-typedef struct {
   zend_object obj;
-  /* rdns_resolver *resolver; */
-  php_cb_data_t *cb_data;
+  struct rdns_resolver *resolver;
 } php_rdns_t;
 
 static zend_class_entry *rdns_ce = NULL;
@@ -86,10 +78,16 @@ ZEND_GET_MODULE(rdns)
 static PHP_METHOD(RDNS, __construct)
 {
   zval *object = getThis();
+  php_rdns_t *i_obj = NULL;
 
   if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
     ZVALL_NULL(object);
     return;
+  }
+
+  i_obj = (php_rdns_t *) zend_object_store_get_object(object TSRMLS_CC);
+  if (!(i_obj->resolver = rdns_resolver_new())) {
+    php_error_docref(NULL TSRMLS_CC, E_ERROR, "could not create resolver structure");
   }
 }
 /* }}} */
@@ -113,7 +111,7 @@ static PHP_METHOD(RDNS, addServer)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_TRUE;
+  RETURN_FALSE;
 }
 /* }}} */
 
@@ -137,7 +135,7 @@ static PHP_METHOD(RDNS, addRequest)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_TRUE;
+  RETURN_FALSE;
 }
 /* }}} */
 
@@ -153,7 +151,7 @@ static PHP_METHOD(RDNS, getReplies)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_TRUE;
+  RETURN_FALSE;
 }
 /* }}} */
 
