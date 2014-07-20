@@ -140,7 +140,7 @@ static PHP_METHOD(RDNS, addRequest)
 /* }}} */
 
 
-/* {{{ RDNS::getReplies() */
+/* {{{ array RDNS::getReplies() */
 static PHP_METHOD(RDNS, getReplies)
 {
   RDNS_INIT_VARS;
@@ -151,7 +151,7 @@ static PHP_METHOD(RDNS, getReplies)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_FALSE;
+  array_init(return_value);
 }
 /* }}} */
 
