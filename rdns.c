@@ -2,7 +2,7 @@
 #include "config.h"
 #endif
 
-#include "php_rdns.h"
+#include <php.h>
 
 #define PHP_RDNS_VERSION "0.1.0"
 #define PHP_RDNS_EXTNAME "RDNS"
@@ -41,15 +41,64 @@ ZEND_BEGIN_ARG_INFO_EX(arginfo_addRequest, 0, 0, 3)
   ZEND_ARG_INFO(0, timeout)
 ZEND_END_ARG_INFO()
 
-#define RDNS_ME(name, args) PHP_ME(RDNS, name, args, ZEND_ACC_PUBLIC)
 static zend_function_entry rdns_class_methods[] = {
-  RDNS_ME(__construct, NULL)
-  RDNS_ME(addServer,   arginfo_addServer)
-  RDNS_ME(addRequest,  arginfo_addRequest)
-  RDNS_ME(getReplies,  NULL)
+  PHP_ME(RDNS, __construct, NULL, ZEND_ACC_PUBLIC | ZEND_ACC_CTOR)
+  PHP_ME(RDNS, addServer,   arginfo_addServer, ZEND_ACC_PUBLIC)
+  PHP_ME(RDNS, addRequest,  arginfo_addRequest, ZEND_ACC_PUBLIC)
+  PHP_ME(RDNS, getReplies,  NULL, ZEND_ACC_PUBLIC)
   PHP_FE_END
 };
-#undef RDNS_ME
+/* }}} */
+
+static void php_rdns_free(php_rdns_t *i_obj TSRMLS_DC)
+{
+  zend_object_std_dtor(&i_obj->obj TSRMLS_CC);
+  rdns_resolver_release(i_obj->resolver);
+  efree(i_obj);
+}
+
+static zend_object_value
+php_rdns_new(zend_class_entry *ce TSRMLS_DC)
+{
+  zend_object_value retval;
+  php_rdns_t *i_obj;
+  zval *tmp;
+
+  i_obj = ecalloc(1, sizeof(*i_obj));
+  zend_object_std_init(&i_obj->obj, ce TSRMLS_CC );
+
+  retval.handle = zend_objects_store_put(i_obj,
+                                         (zend_objects_store_dtor_t)
+                                         zend_objects_destroy_object,
+                                         (zend_objects_free_object_storage_t)
+                                         php_rdns_free, NULL TSRMLS_CC);
+  retval.handlers = zend_get_std_object_handlers();
+
+  return retval;
+}
+
+/* {{{ PHP_MINIT_FUNCTION */
+static PHP_MINIT_FUNCTION(rdns)
+{
+  zend_class_entry ce;
+  INIT_CLASS_ENTRY(ce, PHP_RDNS_EXTNAME, rdns_class_methods);
+  rdns_ce = zend_register_internal_class(&ce TSRMLS_CC);
+  rdns_ce->create_object = php_rdns_new;
+
+  return SUCCESS;
+}
+/* }}} */
+
+/* {{{ PHP_MINIT_FUNCTION */
+static PHP_MINFO_FUNCTION(rdns)
+{
+  php_info_print_table_start();
+  php_info_print_table_header(2, "RDNS Support", "enabled");
+  php_info_print_table_row(2, "RDNS Version", PHP_RDNS_VERSION);
+  php_info_print_table_row(2, "RDNS GitHub", "http://github.com/weheartwebsites/php-rdns");
+  php_info_print_table_row(2, "RDNS librdns", "44e4c9ba12d2504379443e7f7a7f94ad088a28e3");
+  php_info_print_table_end();
+}
 /* }}} */
 
 // the following code creates an entry for the module and registers it with Zend.
@@ -72,7 +121,9 @@ zend_module_entry rdns_module_entry = {
   STANDARD_MODULE_PROPERTIES
 };
 
+#ifdef COMPILE_DL_RDNS
 ZEND_GET_MODULE(rdns)
+#endif
 
 /* {{{ RDNS::__construct() */
 static PHP_METHOD(RDNS, __construct)
@@ -150,31 +201,5 @@ static PHP_METHOD(RDNS, getReplies)
   RDNS_FETCH_OBJECT;
 
   array_init(return_value);
-}
-/* }}} */
-
-
-/* {{{ PHP_MINIT_FUNCTION */
-static PHP_MINIT_FUNCTION(rdns)
-{
-  zend_class_entry ce;
-  INIT_CLASS_ENTRY(ce, "RDNS", rdns_class_methods);
-  rdns_ce = zend_register_internal_class(&ce TSRMLS_CC);
-  /* rdns_ce->create_object = php_rdns_new; */
-
-  return SUCCESS;
-}
-/* }}} */
-
-
-/* {{{ PHP_MINIT_FUNCTION */
-static PHP_MINFO_FUNCTION(rdns)
-{
-  php_info_print_table_start();
-  php_info_print_table_header(2, "RDNS Support", "enabled");
-  php_info_print_table_row(2, "RDNS Version", PHP_RDNS_VERSION);
-  php_info_print_table_row(2, "RDNS GitHub", "http://github.com/weheartwebsites/php-rdns");
-  php_info_print_table_row(2, "RDNS librdns", "44e4c9ba12d2504379443e7f7a7f94ad088a28e3");
-  php_info_print_table_end();
 }
 /* }}} */
