@@ -93,7 +93,7 @@ static PHP_METHOD(RDNS, __construct)
 /* }}} */
 
 
-/* {{{ RDNS::addServer(string $server [, int $port = 53 [, int $prio = 0 ] ]) */
+/* {{{ bool RDNS::addServer(string $server [, int $port = 53 [, int $prio = 0 ] ]) */
 static PHP_METHOD(RDNS, addServer)
 {
   char *server;
@@ -107,11 +107,9 @@ static PHP_METHOD(RDNS, addServer)
     return;
   }
 
-  php_printf("%s %ld %ld\n", server, port, prio);
-
   RDNS_FETCH_OBJECT;
 
-  RETURN_FALSE;
+  RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver, server, port, prio));
 }
 /* }}} */
 
