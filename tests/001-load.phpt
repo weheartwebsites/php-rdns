@@ -1,5 +1,5 @@
 --TEST--
-Check for rdns presence
+Check if module can be loaded
 --SKIPIF--
 <?php if (!extension_loaded("rdns")) print "skip"; ?>
 --FILE--

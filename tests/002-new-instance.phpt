@@ -4,8 +4,7 @@ Check if RDNS class can be instantiated
 <?php if (!extension_loaded("rdns")) print "skip"; ?>
 --FILE--
 <?php
-$rdns = new RDNS;
-var_dump($rdns);
+var_dump(new RDNS);
 ?>
 --EXPECT--
 object(RDNS)#1 (0) {
