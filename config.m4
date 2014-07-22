@@ -1,8 +1,8 @@
-dnl
-dnl $ Id: $
+dnl $Id$
+dnl config.m4 for extension rdns
 
-PHP_ARG_ENABLE(rdns, whether to enable rdns,
-[  --enable-rdns           Enable RDNS])
+PHP_ARG_WITH(rdns, for rdns support,
+[  --with-rdns             Include RDNS support])
 
 if test -z "$PHP_DEBUG"; then
   AC_ARG_ENABLE(debug,
