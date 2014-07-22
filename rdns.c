@@ -3,6 +3,7 @@
 #endif
 
 #include <php.h>
+#include "rdns_ev.h"
 
 #define PHP_RDNS_VERSION "0.1.0"
 #define PHP_RDNS_EXTNAME "RDNS"
@@ -16,6 +17,7 @@
 
 typedef struct {
   zend_object obj;
+  struct ev_loop *loop;
   struct rdns_resolver *resolver;
 } php_rdns_t;
 
@@ -140,6 +142,9 @@ static PHP_METHOD(RDNS, __construct)
   if (!(i_obj->resolver = rdns_resolver_new())) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "could not create resolver structure");
   }
+
+  i_obj->loop = ev_default_loop(0);
+  rdns_bind_libev(i_obj->resolver, i_obj->loop);
 }
 /* }}} */
 
@@ -160,7 +165,7 @@ static PHP_METHOD(RDNS, addServer)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver, server, port, prio));
+  RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver, server, port, prio, 8));
 }
 /* }}} */
 

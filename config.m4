@@ -28,5 +28,8 @@ if test "$PHP_RDNS" = "yes"; then
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/punycode.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/resolver.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/util.c"
+
+  PHP_ADD_LIBRARY(ev, 1, RDNS_SHARED_LIBADD)
+  PHP_SUBST(RDNS_SHARED_LIBADD)
   PHP_NEW_EXTENSION(rdns, $PHP_RDNS_SOURCES, $ext_shared)
 fi
