@@ -13,5 +13,8 @@ before_install:
 
 script:
     - sh -c "make test | tee result.txt"
+    - sh -c "make install"
+    - echo "extension = <extension>.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - bin/atoum -d ./tests
     - sh test-report.sh
 
