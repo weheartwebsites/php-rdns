@@ -1,0 +1,14 @@
+language: php
+
+php:
+    - 5.4
+
+before_install:
+    - sudo apt-get update -qq
+    - sudo apt-get install -y libev-dev
+    - sh -c "phpize && ./configure --with-rdns && make"
+
+script:
+    - sh -c "make test | tee result.txt"
+    - sh test-report.sh
+
