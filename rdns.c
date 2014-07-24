@@ -87,6 +87,17 @@ static PHP_MINIT_FUNCTION(rdns)
   rdns_ce = zend_register_internal_class(&ce TSRMLS_CC);
   rdns_ce->create_object = php_rdns_new;
 
+#define RDNS_TYPE_CONST(TYPE)                               \
+  REGISTER_LONG_CONSTANT("RDNS_"#TYPE, RDNS_REQUEST_##TYPE,  \
+                         CONST_CS | CONST_PERSISTENT);
+  RDNS_TYPE_CONST(A);
+  RDNS_TYPE_CONST(NS);
+  RDNS_TYPE_CONST(MX);
+  RDNS_TYPE_CONST(TXT);
+  RDNS_TYPE_CONST(SRV);
+  RDNS_TYPE_CONST(AAAA);
+#undef RDNS_TYPE_CONST
+
   return SUCCESS;
 }
 /* }}} */
