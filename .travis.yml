@@ -9,12 +9,13 @@ env:
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y libev-dev
+    - wget http://downloads.atoum.org/nightly/mageekguy.atoum.phar
     - sh -c "phpize && ./configure --with-rdns && make"
 
 script:
     - sh -c "make test | tee result.txt"
     - sh -c "make install"
-    - echo "extension = <extension>.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - bin/atoum -d ./tests
+    - echo "extension=rdns.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - php mageekguy.atoum.phar -d ./tests
     - sh test-report.sh
 
