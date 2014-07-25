@@ -31,12 +31,16 @@ $ echo "extension=rdns.so" >> /etc/php.ini
 ## Usage
 
 ```php
+<?php
+
 $rdns = new RDNS;
 $rdns->addServer('8.8.8.8');
 
+// non blocking
 $rdns->addRequest('www.example.com', RDNS_A);
 $rdns->addRequest('example.com', RDNS_A);
 
+// blocking
 $replies = $rdns->getReplies();
 
 var_dump($replies);
@@ -51,4 +55,4 @@ coming soon...
 ## Trivia
 
 The "r" in *php-rdns* stands for "rapid" which was taken from the name of librdns. The initial version was developed by Alexander Solovets and sponsored by
-weheartwebsites, which is a tiny web developement company.
+[weheartwebsites](http://www.weheartwebsites.de), which is a tiny web developement company based in Germany.
