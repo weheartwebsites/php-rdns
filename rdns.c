@@ -118,6 +118,7 @@ static PHP_MINIT_FUNCTION(rdns)
                          CONST_CS | CONST_PERSISTENT);
   RDNS_TYPE_CONST(A);
   RDNS_TYPE_CONST(NS);
+  RDNS_TYPE_CONST(PTR);
   RDNS_TYPE_CONST(MX);
   RDNS_TYPE_CONST(TXT);
   RDNS_TYPE_CONST(SRV);
@@ -245,6 +246,10 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
       } else if (entry->type == RDNS_REQUEST_NS) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "NS", 1);
         add_assoc_long(result_item, "pri", entry->content.mx.priority);
+        add_assoc_string_ex(result_item, ZEND_STRS("target"),
+                            entry->content.mx.name, 1);
+      } else if (entry->type == RDNS_REQUEST_PTR) {
+        add_assoc_string_ex(result_item, ZEND_STRS("type"), "PTR", 1);
         add_assoc_string_ex(result_item, ZEND_STRS("target"),
                             entry->content.mx.name, 1);
       } else if (entry->type == RDNS_REQUEST_TXT) {
