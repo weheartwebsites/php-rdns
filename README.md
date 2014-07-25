@@ -4,6 +4,19 @@
 
 The usage was modelled after [dns_get_record](http://php.net/manual/en/function.dns-get-record.php).
 
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
+
+- [php-rdns  ](#user-content-php-rdns--)
+	- [Requirements](#user-content-requirements)
+	- [Installation](#user-content-installation)
+	- [Usage](#user-content-usage)
+	- [Methods](#user-content-methods)
+		- [RDNS::RDNS_*](#user-content-rdnsrdns_)
+		- [RDNS::addServer](#user-content-rdnsaddserver)
+		- [RDNS::addRequest](#user-content-rdnsaddrequest)
+		- [RDNS::getReplies](#user-content-rdnsgetreplies)
+	- [Trivia](#user-content-trivia)
+
 
 ## Requirements
 
