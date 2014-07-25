@@ -1,7 +1,11 @@
 --TEST--
 Check RDNS::addRequest
 --SKIPIF--
-<?php if (!extension_loaded("rdns")) print "skip"; ?>
+<?php
+if (!extension_loaded("rdns") ||
+    !@fsockopen('php.net', 80))
+    print "skip";
+?>
 --FILE--
 <?php
 $rdns = new RDNS;
