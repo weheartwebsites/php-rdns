@@ -8,6 +8,7 @@
   | http://www.apache.org/licenses/LICENSE-2.0.html                      |
   +----------------------------------------------------------------------+
   | Authors: Alexander Solovets <asolovets@gmail.com>                    |
+  |          Gunter Grodotzki <php-rdns@weheartwebsites.de>              |
   +----------------------------------------------------------------------+
 */
 
