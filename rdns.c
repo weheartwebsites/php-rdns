@@ -1,3 +1,16 @@
+/*
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2014 weheartwebsites UG                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 2 of the Apache license,      |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available through the world-wide-web at the following url:           |
+  | http://www.apache.org/licenses/LICENSE-2.0.html                      |
+  +----------------------------------------------------------------------+
+  | Authors: Alexander Solovets <asolovets@gmail.com>                    |
+  +----------------------------------------------------------------------+
+*/
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
