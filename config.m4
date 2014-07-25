@@ -1,4 +1,4 @@
-dnl $Id$
+dnl $ Id: $
 dnl config.m4 for extension rdns
 
 PHP_ARG_WITH(rdns, for rdns support,
