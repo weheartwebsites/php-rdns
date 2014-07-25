@@ -5,9 +5,7 @@ php:
     - 5.5
 
 env:
-    global:
-        - NO_INTERACTION=1 TEST_TIMEOUT=300
-        - secure: "YHZBpyDtq43d+/u1R6Ck13jIHbE9C0ssdY7eFIg1pdg5xDSuQjN/FTw1ObxNbtCKxDvkVLa9DV+7FdvZhKPPpBXJqaszmNU+9HYhp1JF7eYPmUTMsEK0ndcyj1GVu6tEO2K01dZyOYyeSoHLIXhyB18wZikFwUhzrMbbA6N2jMU="
+    - NO_INTERACTION=1 TEST_TIMEOUT=300
 
 before_install:
     - sudo apt-get update -qq
@@ -21,13 +19,3 @@ script:
 notifications:
     email:
         - php-rdns@weheartwebsites.de
-
-addons:
-  coverity_scan:
-      project:
-          name: "weheartwebsites/php-rdns"
-          description: "Build submitted via Travis CI"
-      notification_email: php-rdns@weheartwebsites.de
-      build_command_prepend: "phpize; ./configure --with-rdns; make clean"
-      build_command: "make -j 4"
-      branch_pattern: master
