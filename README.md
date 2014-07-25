@@ -49,10 +49,20 @@ var_dump($replies);
 
 ## Methods
 
-coming soon...
+
+### RDNS::RDNS_*
+
+
+### RDNS::addServer
+
+
+### RDNS::addRequest
+
+
+### RDNS::getReplies
 
 
 ## Trivia
 
-The "r" in *php-rdns* stands for "rapid" which was taken from the name of librdns. The initial version was developed by Alexander Solovets and sponsored by
+The "r" in *php-rdns* stands for "rapid" which was taken from the name of librdns. The initial version was developed by [Alexander Solovets](https://github.com/mbait) and sponsored by
 [weheartwebsites](http://www.weheartwebsites.de), which is a tiny web developement company based in Germany.
