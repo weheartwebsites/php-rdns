@@ -20,6 +20,7 @@ if test "$PHP_RDNS" = "yes"; then
   AC_DEFINE(HAVE_RDNS, 1, [Whether you have RDNS])
 
   PHP_RDNS_SOURCES=rdns.c
+
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/compression.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/curve.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/logger.c"
@@ -28,6 +29,12 @@ if test "$PHP_RDNS" = "yes"; then
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/punycode.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/resolver.c"
   PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/src/util.c"
+
+  PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/contrib/libottery/chacha_merged.c"
+  PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/contrib/libottery/ottery.c"
+  PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/contrib/libottery/ottery_cpuinfo.c"
+  PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/contrib/libottery/ottery_entropy.c"
+  PHP_RDNS_SOURCES="${PHP_RDNS_SOURCES} librdns/contrib/libottery/ottery_global.c"
 
   PHP_ADD_LIBRARY(ev, 1, RDNS_SHARED_LIBADD)
   PHP_SUBST(RDNS_SHARED_LIBADD)
