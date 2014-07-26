@@ -332,6 +332,29 @@ static PHP_METHOD(RDNS, addRequest)
 }
 /* }}} */
 
+static int ksort(zval *array)
+{
+  zval *params = { array };
+  zval *func;
+  zval *retval;
+
+  MAKE_STD_ZVAL(func);
+  ZVAL_STRING(func, "ksort", 0);
+  MAKE_STD_ZVAL(retval);
+
+  call_user_function(
+                     EG(function_table),
+                     NULL,
+                     func,
+                     retval,
+                     1,
+                     &array TSRMLS_CC
+                     );
+  FREE_ZVAL(func);
+  FREE_ZVAL(retval);
+
+  return 0;
+}
 
 /* {{{ array RDNS::getReplies() */
 static PHP_METHOD(RDNS, getReplies)
@@ -349,6 +372,7 @@ static PHP_METHOD(RDNS, getReplies)
   pthread_mutex_lock(&i_obj->mutex);
   if (i_obj->nreq > 0) {
     ev_run(i_obj->loop, 0);
+    ksort(return_value);
   }
   pthread_mutex_unlock(&i_obj->mutex);
 }
