@@ -337,24 +337,24 @@ static PHP_METHOD(RDNS, addRequest)
 
 static int ksort(zval *array)
 {
-  zval *params = { array };
-  zval *func;
-  zval *retval;
+  /* zval *params = { array }; */
+  /* zval *func; */
+  /* zval *retval; */
 
-  MAKE_STD_ZVAL(func);
-  ZVAL_STRING(func, "ksort", 0);
-  MAKE_STD_ZVAL(retval);
+  /* MAKE_STD_ZVAL(func); */
+  /* ZVAL_STRING(func, "ksort", 0); */
+  /* MAKE_STD_ZVAL(retval); */
 
-  call_user_function(
-                     NULL,
-                     NULL,
-                     func,
-                     retval,
-                     1,
-                     &array TSRMLS_CC
-                     );
-  FREE_ZVAL(func);
-  FREE_ZVAL(retval);
+  /* call_user_function( */
+  /*                    NULL, */
+  /*                    NULL, */
+  /*                    func, */
+  /*                    retval, */
+  /*                    1, */
+  /*                    &array TSRMLS_CC */
+  /*                    ); */
+  /* FREE_ZVAL(func); */
+  /* FREE_ZVAL(retval); */
 
   return 0;
 }

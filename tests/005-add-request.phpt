@@ -15,7 +15,10 @@ $rdns->addRequest('_xmpp-client._tcp.jabberafrica.org', RDNS_SRV, 1.2);
 $rdns->addRequest('php.net', RDNS_A);
 $rdns->addRequest('google.com', RDNS_TXT);
 # Check that keys are sorted.
-var_dump(array_keys($rdns->getReplies()));
+# XXX: hack to workaround the bug with ksort.
+$reply = $rdns->getReplies();
+ksort($reply);
+var_dump(array_keys($reply));
 
 $rdns->addRequest('google.com', RDNS_TXT);
 $rdns->addRequest('gmail.com', RDNS_MX);
