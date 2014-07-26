@@ -165,6 +165,18 @@ zend_module_entry rdns_module_entry = {
 ZEND_GET_MODULE(rdns)
 #endif
 
+static void rdns_log_cb(
+                        void *data,
+                        enum rdns_log_level level,
+                        const char *function,
+                        const char *format,
+                        va_list args
+                        )
+{
+  /* TODO: implement */
+}
+
+
 /* {{{ RDNS::__construct() */
 static PHP_METHOD(RDNS, __construct)
 {
@@ -180,6 +192,7 @@ static PHP_METHOD(RDNS, __construct)
   if (!(i_obj->resolver = rdns_resolver_new())) {
     php_error_docref(NULL TSRMLS_CC, E_ERROR, "could not create resolver structure");
   }
+  rdns_resolver_set_logger(i_obj->resolver, rdns_log_cb, NULL);
 
   pthread_mutex_init(&i_obj->mutex, 0);
   i_obj->loop = ev_default_loop(0);
@@ -204,9 +217,11 @@ static PHP_METHOD(RDNS, addServer)
 
   RDNS_FETCH_OBJECT;
 
-  RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver, server, port, prio, 8));
+  RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver,
+                                       server, port, prio, 8));
 }
 /* }}} */
+
 
 static void
 rdns_reply_callback(struct rdns_reply *reply, void *arg)
@@ -275,6 +290,7 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
     ev_break(context->rdns->loop, EVBREAK_ALL);
   }
 }
+
 
 /* {{{ bool RDNS::addRequest(string $hostname, int $type, float $timeout) */
 static PHP_METHOD(RDNS, addRequest)
