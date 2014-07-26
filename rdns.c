@@ -135,8 +135,8 @@ static PHP_MINFO_FUNCTION(rdns)
   php_info_print_table_start();
   php_info_print_table_header(2, "RDNS Support", "enabled");
   php_info_print_table_row(2, "RDNS Version", PHP_RDNS_VERSION);
-  php_info_print_table_row(2, "RDNS GitHub", "http://github.com/weheartwebsites/php-rdns");
-  php_info_print_table_row(2, "RDNS librdns", "08f7afd8f1716f1ac9ce7825f0f9bce1345bb48c");
+  php_info_print_table_row(2, "RDNS GitHub", "https://github.com/weheartwebsites/php-rdns");
+  php_info_print_table_row(2, "RDNS librdns", "$Id: 40d4eb2ad845643fe6a949f98042bb14c1ea24ba$");
   php_info_print_table_end();
 }
 /* }}} */
