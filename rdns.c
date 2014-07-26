@@ -21,6 +21,7 @@
 
 #include <php.h>
 #include <ext/standard/info.h>
+#include <Zend/zend_API.h>
 
 #include "rdns.h"
 #include "rdns_ev.h"
