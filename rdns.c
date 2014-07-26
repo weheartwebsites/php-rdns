@@ -351,7 +351,7 @@ static int ksort(zval *array)
                      func,
                      retval,
                      1,
-                     &array
+                     &array TSRMLS_CC
                      );
   FREE_ZVAL(func);
   FREE_ZVAL(retval);
