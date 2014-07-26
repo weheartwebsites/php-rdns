@@ -345,7 +345,7 @@ static int ksort(zval *array)
   MAKE_STD_ZVAL(retval);
 
   call_user_function(
-                     CG(function_table),
+                     NULL,
                      NULL,
                      func,
                      retval,
