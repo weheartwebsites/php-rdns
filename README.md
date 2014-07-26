@@ -104,7 +104,7 @@ As soon as the module is loaded following `CONSTANTS` will be available, the usa
 Adds a DNS server to the pool.
 
 ```php
-bool RNS::addServer ( string $server [, int $port = 53 [, int $prio = 0 ]] )
+bool RDNS::addServer ( string $server [, int $port = 53 [, int $prio = 0 ]] )
 ```
 
 - **server**: IP address of the DNS server (e.g. `8.8.8.8` for google's public DNS)
