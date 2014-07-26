@@ -18,7 +18,9 @@
 
 #include <stdlib.h>
 #include <pthread.h>
+
 #include <php.h>
+#include <ext/standard/info.h>
 
 #include "rdns.h"
 #include "rdns_ev.h"
