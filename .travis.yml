@@ -10,6 +10,7 @@ env:
 before_install:
     - sudo apt-get update -qq
     - sudo apt-get install -y libev-dev
+    - sh -c "rgrep TSRMG ~/.phpenv/versions/$(phpenv version-name)/include/php"
     - sh -c "phpize && ./configure --with-rdns && make"
 
 script:
