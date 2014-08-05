@@ -139,7 +139,7 @@ static PHP_MINFO_FUNCTION(rdns)
   php_info_print_table_header(2, "RDNS Support", "enabled");
   php_info_print_table_row(2, "RDNS Version", PHP_RDNS_VERSION);
   php_info_print_table_row(2, "RDNS GitHub", "https://github.com/weheartwebsites/php-rdns");
-  php_info_print_table_row(2, "RDNS librdns", "$Id: 40d4eb2ad845643fe6a949f98042bb14c1ea24ba$");
+  php_info_print_table_row(2, "RDNS librdns", "$Id: 40d4eb2ad845643fe6a949f98042bb14c1ea24ba $");
   php_info_print_table_end();
 }
 /* }}} */
@@ -221,7 +221,7 @@ static PHP_METHOD(RDNS, addServer)
   RDNS_FETCH_OBJECT;
 
   RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver,
-                                       server, port, prio, 16));
+                                       server, port, prio, 8));
 }
 /* }}} */
 
@@ -266,7 +266,6 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
                             entry->content.mx.name, 1);
       } else if (entry->type == RDNS_REQUEST_NS) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "NS", 1);
-        add_assoc_long(result_item, "pri", entry->content.mx.priority);
         add_assoc_string_ex(result_item, ZEND_STRS("target"),
                             entry->content.mx.name, 1);
       } else if (entry->type == RDNS_REQUEST_PTR) {
@@ -335,7 +334,7 @@ static PHP_METHOD(RDNS, addRequest)
     }
   }
   RETURN_BOOL(rdns_make_request_full(i_obj->resolver, rdns_reply_callback,
-                                     context, timeout, 0, 1,
+                                     context, timeout, 1, 1,
                                      hostname, type));
 }
 /* }}} */
