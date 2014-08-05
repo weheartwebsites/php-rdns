@@ -25,10 +25,9 @@ Array
 (
     [0] => class
     [1] => host
-    [2] => pri
-    [3] => target
-    [4] => ttl
-    [5] => type
+    [2] => target
+    [3] => ttl
+    [4] => type
 )
 string(7) "php.net"
 string(2) "NS"
