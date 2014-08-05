@@ -267,11 +267,11 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
       } else if (entry->type == RDNS_REQUEST_NS) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "NS", 1);
         add_assoc_string_ex(result_item, ZEND_STRS("target"),
-                            entry->content.mx.name, 1);
+                            entry->content.ns.name, 1);
       } else if (entry->type == RDNS_REQUEST_PTR) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "PTR", 1);
         add_assoc_string_ex(result_item, ZEND_STRS("target"),
-                            entry->content.mx.name, 1);
+                            entry->content.ptr.name, 1);
       } else if (entry->type == RDNS_REQUEST_TXT) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "TXT", 1);
         add_assoc_string_ex(result_item, ZEND_STRS("txt"),
