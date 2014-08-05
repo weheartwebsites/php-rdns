@@ -187,7 +187,7 @@ static PHP_METHOD(RDNS, __construct)
   php_rdns_t *i_obj = NULL;
 
   if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "") == FAILURE) {
-    ZVALL_NULL(object);
+    ZVAL_NULL(object);
     return;
   }
 
@@ -221,7 +221,7 @@ static PHP_METHOD(RDNS, addServer)
   RDNS_FETCH_OBJECT;
 
   RETURN_BOOL(rdns_resolver_add_server(i_obj->resolver,
-                                       server, port, prio, 8));
+                                       server, port, prio, 16));
 }
 /* }}} */
 
@@ -230,7 +230,8 @@ static void
 rdns_reply_callback(struct rdns_reply *reply, void *arg)
 {
   struct rdns_reply_entry *entry;
-  char ipstr[INET6_ADDRSTRLEN + 1];
+  int ipstr_len = INET6_ADDRSTRLEN + 1;
+  char *ipstr;
   zval *result, *result_item;
   php_rdns_context_t *context = (php_rdns_context_t *) arg;
   struct rdns_request_name const *name =
@@ -240,6 +241,8 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
   array_init(result);
   if (reply->code == RDNS_RC_NOERROR) {
     entry = reply->entries;
+    ipstr = malloc(ipstr_len);
+
     while (entry != NULL) {
       MAKE_STD_ZVAL(result_item);
       array_init(result_item);
@@ -250,11 +253,11 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
 
       if (entry->type == RDNS_REQUEST_A) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "A", 1);
-        inet_ntop (AF_INET, &entry->content.a.addr, ipstr, sizeof (ipstr));
+        inet_ntop (AF_INET, &entry->content.a.addr, ipstr, ipstr_len);
         add_assoc_string_ex(result_item, ZEND_STRS("ip"), ipstr, 1);
       } else if (entry->type == RDNS_REQUEST_AAAA) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "AAAA", 1);
-        inet_ntop (AF_INET6, &entry->content.aaa.addr, ipstr, sizeof ipstr);
+        inet_ntop (AF_INET6, &entry->content.aaa.addr, ipstr, ipstr_len);
         add_assoc_string_ex(result_item, ZEND_STRS("ipv6"), ipstr, 1);
       } else if (entry->type == RDNS_REQUEST_MX) {
         add_assoc_string_ex(result_item, ZEND_STRS("type"), "MX", 1);
@@ -282,9 +285,11 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
         add_assoc_long(result_item, "weight", entry->content.srv.weight);
         add_assoc_long(result_item, "port", entry->content.srv.port);
       }
+
       entry = entry->next;
       add_next_index_zval(result, result_item);
     }
+    free(ipstr);
   }
   add_index_zval(context->rdns->result, context->index, result);
 
@@ -330,7 +335,7 @@ static PHP_METHOD(RDNS, addRequest)
     }
   }
   RETURN_BOOL(rdns_make_request_full(i_obj->resolver, rdns_reply_callback,
-                                     context, timeout, 1, 1,
+                                     context, timeout, 0, 1,
                                      hostname, type));
 }
 /* }}} */
