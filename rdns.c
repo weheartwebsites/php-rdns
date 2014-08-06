@@ -8,7 +8,8 @@
   | http://www.apache.org/licenses/LICENSE-2.0.html                      |
   +----------------------------------------------------------------------+
   | Authors: Alexander Solovets <asolovets@gmail.com>                    |
-  |          Gunter Grodotzki <php-rdns@weheartwebsites.de>              |
+  |          Eduardo Silva <eduardo@monkey.io>                           |
+  |          Gunter Grodotzki <guenter@weheartwebsites.de>               |
   +----------------------------------------------------------------------+
 */
 
@@ -16,18 +17,15 @@
 #include "config.h"
 #endif
 
-#include <stdlib.h>
 #include <pthread.h>
 
-#include <php.h>
-#include <ext/standard/info.h>
-#include <Zend/zend_API.h>
+#include "php.h"
+#include "php_ini.h"
+#include "ext/standard/info.h"
+#include "php_rdns.h"
 
 #include "rdns.h"
 #include "rdns_ev.h"
-
-#define PHP_RDNS_VERSION "0.1.0"
-#define PHP_RDNS_EXTNAME "RDNS"
 
 #define RDNS_INIT_VARS                          \
   zval *object = getThis();                     \
@@ -51,9 +49,6 @@ typedef struct {
 } php_rdns_context_t;
 
 static zend_class_entry *rdns_ce = NULL;
-
-extern zend_module_entry rdns_module_entry;
-#define phpext_rdns_ptr &rdns_module_entry
 
 static PHP_METHOD(RDNS, __construct);
 static PHP_METHOD(RDNS, addServer);
@@ -85,6 +80,7 @@ static void php_rdns_free(php_rdns_t *i_obj TSRMLS_DC)
 {
   zend_object_std_dtor(&i_obj->obj TSRMLS_CC);
   rdns_resolver_release(i_obj->resolver);
+  ev_loop_destroy(i_obj->loop);
   efree(i_obj);
 }
 
