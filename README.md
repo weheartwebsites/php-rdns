@@ -97,6 +97,7 @@ As soon as the module is loaded following `CONSTANTS` will be available, the usa
 - `RDNS_PTR`
 - `RDNS_TXT`
 - `RDNS_SVR`
+- `RDNS_SOA`
 
 
 ### RDNS::addServer
