@@ -51,9 +51,9 @@ $ echo "extension=rdns.so" >> /etc/php.ini
 
 ```
 $ sudo apt-get install libev-dev
-$ wget https://github.com/weheartwebsites/php-rdns/releases/download/v0.1.1/rdns-0.1.1.tgz
-$ tar xvfz rdns-0.1.1.tgz
-$ cd rdns-0.1.1/
+$ wget https://github.com/weheartwebsites/php-rdns/releases/download/v0.1.2/rdns-0.1.2.tgz
+$ tar xvfz rdns-0.1.2.tgz
+$ cd rdns-0.1.2/
 $ phpize
 $ ./configure
 $ make

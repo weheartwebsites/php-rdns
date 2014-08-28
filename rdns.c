@@ -122,6 +122,7 @@ static PHP_MINIT_FUNCTION(rdns)
   RDNS_TYPE_CONST(TXT);
   RDNS_TYPE_CONST(SRV);
   RDNS_TYPE_CONST(AAAA);
+  RDNS_TYPE_CONST(SOA);
 #undef RDNS_TYPE_CONST
 
   return SUCCESS;
@@ -135,7 +136,7 @@ static PHP_MINFO_FUNCTION(rdns)
   php_info_print_table_header(2, "RDNS Support", "enabled");
   php_info_print_table_row(2, "RDNS Version", PHP_RDNS_VERSION);
   php_info_print_table_row(2, "RDNS GitHub", "https://github.com/weheartwebsites/php-rdns");
-  php_info_print_table_row(2, "RDNS librdns", "$Id: 40d4eb2ad845643fe6a949f98042bb14c1ea24ba $");
+  php_info_print_table_row(2, "RDNS librdns", "$Id: 429e2100724fa709e64011951edee8d1e747d04e $");
   php_info_print_table_end();
 }
 /* }}} */
@@ -279,6 +280,18 @@ rdns_reply_callback(struct rdns_reply *reply, void *arg)
         add_assoc_long(result_item, "pri", entry->content.srv.priority);
         add_assoc_long(result_item, "weight", entry->content.srv.weight);
         add_assoc_long(result_item, "port", entry->content.srv.port);
+      } else if (entry->type == RDNS_REQUEST_SOA) {
+        add_assoc_string_ex(result_item, ZEND_STRS("type"), "SOA", 1);
+        add_assoc_string_ex(result_item, ZEND_STRS("mname"),
+                            entry->content.soa.mname, 1);
+        add_assoc_string_ex(result_item, ZEND_STRS("rname"),
+                            entry->content.soa.admin, 1);
+        add_assoc_long(result_item, "serial", entry->content.soa.serial);
+        add_assoc_long(result_item, "refresh", entry->content.soa.refresh);
+        add_assoc_long(result_item, "retry", entry->content.soa.retry);
+        add_assoc_long(result_item, "expire", entry->content.soa.expire);
+        add_assoc_long(result_item, "minimum-ttl",
+                            entry->content.soa.minimum);
       }
 
       entry = entry->next;

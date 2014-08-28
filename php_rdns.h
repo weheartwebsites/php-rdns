@@ -23,7 +23,7 @@ extern zend_module_entry rdns_module_entry;
 #include "TSRM.h"
 #endif
 
-#define PHP_RDNS_VERSION "0.1.1"
+#define PHP_RDNS_VERSION "0.1.2"
 #define PHP_RDNS_EXTNAME "RDNS"
 
 #endif   /* PHP_RDNS_H */
