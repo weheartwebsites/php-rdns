@@ -25,7 +25,7 @@ Currently this is only a "stub" resolver, so recursion will not be supported if 
 ## Requirements
 
  - Unix or Linux
- - PHP 5.4 or 5.5
+ - PHP 5.4, 5.5 or 5.6
  - libev
 
 
@@ -51,9 +51,9 @@ $ echo "extension=rdns.so" >> /etc/php.ini
 
 ```
 $ sudo apt-get install libev-dev
-$ wget https://github.com/weheartwebsites/php-rdns/releases/download/v0.1.2/rdns-0.1.2.tgz
-$ tar xvfz rdns-0.1.2.tgz
-$ cd rdns-0.1.2/
+$ wget https://github.com/weheartwebsites/php-rdns/releases/download/v0.1.3/rdns-0.1.3.tgz
+$ tar xvfz rdns-0.1.3.tgz
+$ cd rdns-0.1.3/
 $ phpize
 $ ./configure
 $ make
